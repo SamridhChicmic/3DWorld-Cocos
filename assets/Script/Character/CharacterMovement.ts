@@ -17,6 +17,8 @@ const { ccclass, property } = _decorator;
 export class CharacterMovement extends Component {
   @property({ type: Node })
   Plane: Node = null;
+  array = ["-z", "-x", "z", "x"];
+  index: number = 0;
   start() {
     input.on(Input.EventType.KEY_PRESSING, this.keyBoardPressed, this);
     input.on(Input.EventType.KEY_DOWN, this.keyBoardDown, this);
@@ -24,6 +26,8 @@ export class CharacterMovement extends Component {
   keyBoardDown(event: EventKeyboard) {
     switch (event.keyCode) {
       case KeyCode.ARROW_LEFT:
+        this.index--;
+        this.index = this.index % 4;
         let AngleLeft = this.node.eulerAngles;
         this.node.eulerAngles = new Vec3(
           AngleLeft.x,
@@ -33,6 +37,8 @@ export class CharacterMovement extends Component {
 
         break;
       case KeyCode.ARROW_RIGHT:
+        this.index++;
+        this.index = this.index % 4;
         let AngleRight = this.node.eulerAngles;
         this.node.eulerAngles = new Vec3(
           AngleRight.x,
@@ -46,29 +52,49 @@ export class CharacterMovement extends Component {
     let currentPosition: Vec3;
     switch (event.keyCode) {
       case KeyCode.ARROW_UP:
-        currentPosition = this.node.getPosition();
-        currentPosition.z -= 0.1;
+        if (this.array[this.index] == "-z") {
+          currentPosition = this.node.getPosition();
+          currentPosition.z -= 0.1;
+          this.node.setPosition(currentPosition);
+        }
+        if (this.array[this.index] == "z") {
+          currentPosition = this.node.getPosition();
+          currentPosition.z += 0.1;
+          this.node.setPosition(currentPosition);
+        }
+        if (this.array[this.index] == "x") {
+          currentPosition = this.node.getPosition();
+          currentPosition.x -= 0.1;
+          this.node.setPosition(currentPosition);
+        }
+        if (this.array[this.index] == "-x") {
+          currentPosition = this.node.getPosition();
+          currentPosition.x += 0.1;
+          this.node.setPosition(currentPosition);
+        }
+        // currentPosition = this.node.getPosition();
+        // currentPosition.z -= 0.1;
 
-        tween(this.node)
-          .to(0.1, {
-            eulerAngles: new Vec3(0, 180, 0),
-            position: currentPosition,
-          })
-          .start();
+        // tween(this.node)
+        //   .to(0.1, {
+        //     eulerAngles: new Vec3(0, 180, 0),
+        //     position: currentPosition,
+        //   })
+        //   .start();
 
         break;
-      case KeyCode.ARROW_DOWN:
-        currentPosition = this.node.getPosition();
-        currentPosition.z += 0.1;
+      //   case KeyCode.ARROW_DOWN:
+      //     currentPosition = this.node.getPosition();
+      //     currentPosition.z += 0.1;
 
-        tween(this.node)
-          .to(0.1, {
-            eulerAngles: new Vec3(0, 0, 0),
-            position: currentPosition,
-          })
-          .start();
+      //     tween(this.node)
+      //       .to(0.1, {
+      //         eulerAngles: new Vec3(0, 0, 0),
+      //         position: currentPosition,
+      //       })
+      //       .start();
 
-        break;
+      //     break;
     }
   }
   update(deltaTime: number) {}
