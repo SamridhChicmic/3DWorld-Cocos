@@ -6,6 +6,7 @@ import {
   input,
   KeyCode,
   Node,
+  tween,
   Vec3,
 } from "cc";
 const { ccclass, property } = _decorator;
@@ -21,25 +22,43 @@ export class CameraMovement extends Component {
       case KeyCode.ARROW_UP:
         currentPosition = this.node.getPosition();
         currentPosition.z -= 0.1;
-        this.node.setPosition(currentPosition);
-
+        // this.node.setPosition(currentPosition);
+        tween(this.node)
+          .to(0.1, {
+            position: currentPosition,
+          })
+          .start();
         break;
       case KeyCode.ARROW_DOWN:
         currentPosition = this.node.getPosition();
         currentPosition.z += 0.1;
-        this.node.setPosition(currentPosition);
-
+        // this.node.setPosition(currentPosition);
+        tween(this.node)
+          .to(0.1, {
+            position: currentPosition,
+          })
+          .start();
         break;
       case KeyCode.ARROW_LEFT:
         currentPosition = this.node.getPosition();
         currentPosition.x -= 0.05;
-        this.node.setPosition(currentPosition);
-
+        // this.node.setPosition(currentPosition);
+        tween(this.node)
+          .to(0.1, {
+            position: currentPosition,
+          })
+          .start();
         break;
       case KeyCode.ARROW_RIGHT:
         currentPosition = this.node.getPosition();
         currentPosition.x += 0.05;
-        this.node.setPosition(currentPosition);
+        // this.node.setPosition(currentPosition);
+        //this.node.setPosition(this.CameraTracker.getWorldPosition());
+        tween(this.node)
+          .to(0.1, {
+            position: currentPosition,
+          })
+          .start();
 
         break;
     }
