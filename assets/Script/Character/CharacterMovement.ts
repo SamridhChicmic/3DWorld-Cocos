@@ -24,7 +24,14 @@ export class CharacterMovement extends Component {
     input.on(Input.EventType.KEY_DOWN, this.keyBoardDown, this);
   }
   keyBoardDown(event: EventKeyboard) {
+    let currentPosition: Vec3;
     switch (event.keyCode) {
+      case KeyCode.ARROW_UP:
+        this.keyPressUP();
+        break;
+      case KeyCode.ARROW_DOWN:
+        this.keyPressDown();
+        break;
       case KeyCode.ARROW_LEFT:
         this.index--;
         if (this.index < 0) this.index = 3;
@@ -55,60 +62,73 @@ export class CharacterMovement extends Component {
     }
   }
   keyBoardPressed(event: EventKeyboard) {
-    let currentPosition: Vec3;
     switch (event.keyCode) {
       case KeyCode.ARROW_UP:
-        if (this.AxisArray[this.index] == "-z") {
-          currentPosition = this.node.getPosition();
-          currentPosition.z -= 0.5;
-
-          tween(this.node).to(0.1, { position: currentPosition }).start();
-        }
-        if (this.AxisArray[this.index] == "z") {
-          currentPosition = this.node.getPosition();
-          currentPosition.z += 0.5;
-
-          tween(this.node).to(0.1, { position: currentPosition }).start();
-        }
-        if (this.AxisArray[this.index] == "x") {
-          currentPosition = this.node.getPosition();
-          currentPosition.x += 0.5;
-
-          tween(this.node).to(0.1, { position: currentPosition }).start();
-        }
-        if (this.AxisArray[this.index] == "-x") {
-          currentPosition = this.node.getPosition();
-          currentPosition.x -= 0.5;
-
-          tween(this.node).to(0.1, { position: currentPosition }).start();
-        }
+        this.keyPressUP();
         break;
       case KeyCode.ARROW_DOWN:
-        if (this.AxisArray[this.index] == "-z") {
-          currentPosition = this.node.getPosition();
-          currentPosition.z += 0.5;
-
-          tween(this.node).to(0.1, { position: currentPosition }).start();
-        }
-        if (this.AxisArray[this.index] == "z") {
-          currentPosition = this.node.getPosition();
-          currentPosition.z -= 0.5;
-
-          tween(this.node).to(0.1, { position: currentPosition }).start();
-        }
-        if (this.AxisArray[this.index] == "x") {
-          currentPosition = this.node.getPosition();
-          currentPosition.x -= 0.5;
-
-          tween(this.node).to(0.1, { position: currentPosition }).start();
-        }
-        if (this.AxisArray[this.index] == "-x") {
-          currentPosition = this.node.getPosition();
-          currentPosition.x += 0.5;
-
-          tween(this.node).to(0.1, { position: currentPosition }).start();
-        }
+        this.keyPressDown();
         break;
+    }
+  }
+  /**
+   * @description Forword Movement of character When UP Arrow Press
+   */
+  keyPressUP() {
+    let currentPosition: Vec3;
+    if (this.AxisArray[this.index] == "-z") {
+      currentPosition = this.node.getPosition();
+      currentPosition.z -= 0.5;
+
+      tween(this.node).to(0.1, { position: currentPosition }).start();
+    }
+    if (this.AxisArray[this.index] == "z") {
+      currentPosition = this.node.getPosition();
+      currentPosition.z += 0.5;
+
+      tween(this.node).to(0.1, { position: currentPosition }).start();
+    }
+    if (this.AxisArray[this.index] == "x") {
+      currentPosition = this.node.getPosition();
+      currentPosition.x += 0.5;
+
+      tween(this.node).to(0.1, { position: currentPosition }).start();
+    }
+    if (this.AxisArray[this.index] == "-x") {
+      currentPosition = this.node.getPosition();
+      currentPosition.x -= 0.5;
+
+      tween(this.node).to(0.1, { position: currentPosition }).start();
+    }
+  }
+  /**
+   * @description Backword Movement of character When UP Arrow Press
+   */
+  keyPressDown() {
+    let currentPosition: Vec3;
+    if (this.AxisArray[this.index] == "-z") {
+      currentPosition = this.node.getPosition();
+      currentPosition.z += 0.5;
+
+      tween(this.node).to(0.1, { position: currentPosition }).start();
+    }
+    if (this.AxisArray[this.index] == "z") {
+      currentPosition = this.node.getPosition();
+      currentPosition.z -= 0.5;
+
+      tween(this.node).to(0.1, { position: currentPosition }).start();
+    }
+    if (this.AxisArray[this.index] == "x") {
+      currentPosition = this.node.getPosition();
+      currentPosition.x -= 0.5;
+
+      tween(this.node).to(0.1, { position: currentPosition }).start();
+    }
+    if (this.AxisArray[this.index] == "-x") {
+      currentPosition = this.node.getPosition();
+      currentPosition.x += 0.5;
+
+      tween(this.node).to(0.1, { position: currentPosition }).start();
     }
   }
   update(deltaTime: number) {}
