@@ -30,13 +30,9 @@ export class CharacterMovement extends Component {
         if (this.index < 0) this.index = 3;
         this.index = this.index % 4;
         let AngleLeft = this.node.eulerAngles;
-        // this.node.eulerAngles = new Vec3(
-        //   AngleLeft.x,
-        //   AngleLeft.y + 90,
-        //   AngleLeft.z
-        // );
+
         tween(this.node)
-          .to(0.1, {
+          .to(0.5, {
             eulerAngles: new Vec3(AngleLeft.x, AngleLeft.y + 90, AngleLeft.z),
           })
           .start();
@@ -46,7 +42,7 @@ export class CharacterMovement extends Component {
         this.index = Math.abs(this.index) % 4;
         let AngleRight = this.node.eulerAngles;
         tween(this.node)
-          .to(0.1, {
+          .to(0.5, {
             eulerAngles: new Vec3(
               AngleRight.x,
               AngleRight.y - 90,
@@ -54,11 +50,7 @@ export class CharacterMovement extends Component {
             ),
           })
           .start();
-        // this.node.eulerAngles = new Vec3(
-        //   AngleRight.x,
-        //   AngleRight.y - 90,
-        //   AngleRight.z
-        // );
+
         break;
     }
   }
@@ -69,19 +61,19 @@ export class CharacterMovement extends Component {
         if (this.AxisArray[this.index] == "-z") {
           currentPosition = this.node.getPosition();
           currentPosition.z -= 0.5;
-          //  this.node.setPosition(currentPosition);
+
           tween(this.node).to(0.1, { position: currentPosition }).start();
         }
         if (this.AxisArray[this.index] == "z") {
           currentPosition = this.node.getPosition();
           currentPosition.z += 0.5;
-          // this.node.setPosition(currentPosition);
+
           tween(this.node).to(0.1, { position: currentPosition }).start();
         }
         if (this.AxisArray[this.index] == "x") {
           currentPosition = this.node.getPosition();
           currentPosition.x += 0.5;
-          // this.node.setPosition(currentPosition);
+
           tween(this.node).to(0.1, { position: currentPosition }).start();
         }
         if (this.AxisArray[this.index] == "-x") {
