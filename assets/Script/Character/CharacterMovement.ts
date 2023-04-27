@@ -17,7 +17,7 @@ const { ccclass, property } = _decorator;
 export class CharacterMovement extends Component {
   @property({ type: Node })
   Plane: Node = null;
-  array = ["-z", "-x", "z", "x"];
+  AxisArray = ["-z", "x", "z", "-x"];
   index: number = 0;
   start() {
     input.on(Input.EventType.KEY_PRESSING, this.keyBoardPressed, this);
@@ -27,24 +27,38 @@ export class CharacterMovement extends Component {
     switch (event.keyCode) {
       case KeyCode.ARROW_LEFT:
         this.index--;
+        if (this.index < 0) this.index = 3;
         this.index = this.index % 4;
         let AngleLeft = this.node.eulerAngles;
-        this.node.eulerAngles = new Vec3(
-          AngleLeft.x,
-          AngleLeft.y + 90,
-          AngleLeft.z
-        );
-
+        // this.node.eulerAngles = new Vec3(
+        //   AngleLeft.x,
+        //   AngleLeft.y + 90,
+        //   AngleLeft.z
+        // );
+        tween(this.node)
+          .to(0.1, {
+            eulerAngles: new Vec3(AngleLeft.x, AngleLeft.y + 90, AngleLeft.z),
+          })
+          .start();
         break;
       case KeyCode.ARROW_RIGHT:
         this.index++;
-        this.index = this.index % 4;
+        this.index = Math.abs(this.index) % 4;
         let AngleRight = this.node.eulerAngles;
-        this.node.eulerAngles = new Vec3(
-          AngleRight.x,
-          AngleRight.y - 90,
-          AngleRight.z
-        );
+        tween(this.node)
+          .to(0.1, {
+            eulerAngles: new Vec3(
+              AngleRight.x,
+              AngleRight.y - 90,
+              AngleRight.z
+            ),
+          })
+          .start();
+        // this.node.eulerAngles = new Vec3(
+        //   AngleRight.x,
+        //   AngleRight.y - 90,
+        //   AngleRight.z
+        // );
         break;
     }
   }
@@ -52,49 +66,57 @@ export class CharacterMovement extends Component {
     let currentPosition: Vec3;
     switch (event.keyCode) {
       case KeyCode.ARROW_UP:
-        if (this.array[this.index] == "-z") {
+        if (this.AxisArray[this.index] == "-z") {
           currentPosition = this.node.getPosition();
-          currentPosition.z -= 0.1;
-          this.node.setPosition(currentPosition);
+          currentPosition.z -= 0.5;
+          //  this.node.setPosition(currentPosition);
+          tween(this.node).to(0.1, { position: currentPosition }).start();
         }
-        if (this.array[this.index] == "z") {
+        if (this.AxisArray[this.index] == "z") {
           currentPosition = this.node.getPosition();
-          currentPosition.z += 0.1;
-          this.node.setPosition(currentPosition);
+          currentPosition.z += 0.5;
+          // this.node.setPosition(currentPosition);
+          tween(this.node).to(0.1, { position: currentPosition }).start();
         }
-        if (this.array[this.index] == "x") {
+        if (this.AxisArray[this.index] == "x") {
           currentPosition = this.node.getPosition();
-          currentPosition.x -= 0.1;
-          this.node.setPosition(currentPosition);
+          currentPosition.x += 0.5;
+          // this.node.setPosition(currentPosition);
+          tween(this.node).to(0.1, { position: currentPosition }).start();
         }
-        if (this.array[this.index] == "-x") {
+        if (this.AxisArray[this.index] == "-x") {
           currentPosition = this.node.getPosition();
-          currentPosition.x += 0.1;
-          this.node.setPosition(currentPosition);
-        }
-        // currentPosition = this.node.getPosition();
-        // currentPosition.z -= 0.1;
+          currentPosition.x -= 0.5;
 
-        // tween(this.node)
-        //   .to(0.1, {
-        //     eulerAngles: new Vec3(0, 180, 0),
-        //     position: currentPosition,
-        //   })
-        //   .start();
-
+          tween(this.node).to(0.1, { position: currentPosition }).start();
+        }
         break;
-      //   case KeyCode.ARROW_DOWN:
-      //     currentPosition = this.node.getPosition();
-      //     currentPosition.z += 0.1;
+      case KeyCode.ARROW_DOWN:
+        if (this.AxisArray[this.index] == "-z") {
+          currentPosition = this.node.getPosition();
+          currentPosition.z += 0.5;
 
-      //     tween(this.node)
-      //       .to(0.1, {
-      //         eulerAngles: new Vec3(0, 0, 0),
-      //         position: currentPosition,
-      //       })
-      //       .start();
+          tween(this.node).to(0.1, { position: currentPosition }).start();
+        }
+        if (this.AxisArray[this.index] == "z") {
+          currentPosition = this.node.getPosition();
+          currentPosition.z -= 0.5;
 
-      //     break;
+          tween(this.node).to(0.1, { position: currentPosition }).start();
+        }
+        if (this.AxisArray[this.index] == "x") {
+          currentPosition = this.node.getPosition();
+          currentPosition.x -= 0.5;
+
+          tween(this.node).to(0.1, { position: currentPosition }).start();
+        }
+        if (this.AxisArray[this.index] == "-x") {
+          currentPosition = this.node.getPosition();
+          currentPosition.x += 0.5;
+
+          tween(this.node).to(0.1, { position: currentPosition }).start();
+        }
+        break;
     }
   }
   update(deltaTime: number) {}
