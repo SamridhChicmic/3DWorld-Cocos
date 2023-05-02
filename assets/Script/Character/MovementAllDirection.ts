@@ -5,6 +5,7 @@ import {
   Input,
   input,
   KeyCode,
+  log,
   Node,
   Vec3,
 } from "cc";
@@ -14,11 +15,14 @@ const { ccclass, property } = _decorator;
 export class MovementAllDirection extends Component {
   deltatime;
   @property({ type: CCFloat })
-  speed = 0.00015;
+  speed = 15;
   start() {
+    console.log(this.node.name);
+
     input.on(
       Input.EventType.KEY_PRESSING,
       this.characterMovementKeyPress,
+
       this
     );
   }
@@ -32,37 +36,47 @@ export class MovementAllDirection extends Component {
 
     switch (event.keyCode) {
       case KeyCode.ARROW_UP:
-        let CharacterPosition = new Vec3();
-        let Destination = new Vec3();
-        Destination.x =
-          this.node.getPosition().x -
-          this.node.forward.x * this.deltatime * this.speed;
-        Destination.y = this.node.getPosition().y;
-        Destination.z =
-          this.node.getPosition().z -
-          this.node.forward.z * this.deltatime * this.speed;
-        Vec3.lerp(CharacterPosition, this.node.getPosition(), Destination, 0.5);
-        this.node.setPosition(CharacterPosition);
+        this.moveForWord();
         break;
       case KeyCode.ARROW_DOWN:
-        let CharacterPositionDown = new Vec3();
-        let DestinationDown = new Vec3();
-        DestinationDown.x =
-          this.node.getPosition().x +
-          this.node.forward.x * this.deltatime * this.speed;
-        DestinationDown.y = this.node.getPosition().y;
-        DestinationDown.z =
-          this.node.getPosition().z +
-          this.node.forward.z * this.deltatime * this.speed;
-        Vec3.lerp(
-          CharacterPositionDown,
-          this.node.getPosition(),
-          DestinationDown,
-          0.5
-        );
-        this.node.setPosition(CharacterPositionDown);
+        this.moveBackWord();
         break;
     }
+  }
+
+  moveForWord() {
+    console.log("CALLLED");
+    let CharacterPosition = new Vec3();
+    let Destination = new Vec3();
+    console.log(this.node.name);
+    Destination.x =
+      this.node.getPosition().x -
+      this.node.forward.x * this.deltatime * this.speed;
+    Destination.y = this.node.getPosition().y;
+    Destination.z =
+      this.node.getPosition().z -
+      this.node.forward.z * this.deltatime * this.speed;
+    Vec3.lerp(CharacterPosition, this.node.getPosition(), Destination, 0.5);
+
+    this.node.setPosition(CharacterPosition);
+  }
+  moveBackWord() {
+    let CharacterPositionDown = new Vec3();
+    let DestinationDown = new Vec3();
+    DestinationDown.x =
+      this.node.getPosition().x +
+      this.node.forward.x * this.deltatime * this.speed;
+    DestinationDown.y = this.node.getPosition().y;
+    DestinationDown.z =
+      this.node.getPosition().z +
+      this.node.forward.z * this.deltatime * this.speed;
+    Vec3.lerp(
+      CharacterPositionDown,
+      this.node.getPosition(),
+      DestinationDown,
+      0.5
+    );
+    this.node.setPosition(CharacterPositionDown);
   }
   update(deltaTime: number) {
     this.deltatime = deltaTime;

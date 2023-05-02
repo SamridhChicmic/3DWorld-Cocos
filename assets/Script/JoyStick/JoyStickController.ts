@@ -4,19 +4,23 @@ import {
   Input,
   input,
   Node,
+  Script,
   UITransform,
   Vec3,
 } from "cc";
 const { ccclass, property } = _decorator;
-
+import { MovementAllDirection } from "../Character/MovementAllDirection";
 @ccclass("JoyStickController")
 export class JoyStickController extends Component {
   @property({ type: Node })
   JoyStick: Node = null;
   @property({ type: Node })
   JoyStickBall: Node = null;
-
+  //   @property({ type: MovementAllDirection })
+  //   Character: MovementAllDirection = null;
   JoyStickBallBaseWidth: number = 0;
+  TouchUp: boolean = false;
+  TouchDown: boolean = false;
   start() {
     this.JoyStickBallBaseWidth =
       this.JoyStick.getComponent(UITransform).width * 0.5;
@@ -47,8 +51,12 @@ export class JoyStickController extends Component {
       intialPos.x >= -this.JoyStickBallBaseWidth
     ) {
       if (intialPos.y > 0) {
-        console.log("Runnforword");
+        console.log("Forword");
+        this.TouchDown = false;
+        this.TouchUp = true;
       } else if (intialPos.y < 0) {
+        this.TouchUp = false;
+        this.TouchDown = true;
         console.log("backword");
       }
       this.JoyStickBall.setPosition(intialPos);
@@ -57,13 +65,19 @@ export class JoyStickController extends Component {
   onTouchStart() {
     console.log("TouchStart");
     this.JoyStickBall.setPosition(0, 0, 0);
+    this.getComponent(MovementAllDirection).moveForWord();
   }
   onTouchEnd() {
+    this.TouchUp = false;
+    this.TouchDown = false;
     console.log("TouchEnd");
     this.JoyStickBall.setPosition(0, 0, 0);
   }
-  onTouch() {
-    console.log("Hello");
+
+  update(deltaTime: number) {
+    if (this.TouchUp == true) {
+      console.log("TRue");
+      this.getComponent(MovementAllDirection).moveForWord();
+    }
   }
-  update(deltaTime: number) {}
 }
