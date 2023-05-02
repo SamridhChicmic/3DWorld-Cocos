@@ -1,4 +1,14 @@
-import { _decorator, Component, Input, input, Node, Vec2, Vec3 } from "cc";
+import {
+  _decorator,
+  Component,
+  Input,
+  input,
+  math,
+  Node,
+  quat,
+  Vec2,
+  Vec3,
+} from "cc";
 const { ccclass, property } = _decorator;
 
 @ccclass("TopDownCameraAdjustment")
@@ -15,7 +25,6 @@ export class TopDownCameraAdjustment extends Component {
     );
   }
   mouseMoveTopDown(event) {
-    console.log("LOGTOPDOWN", event.getDeltaY());
     let currentPosition = event.getLocation();
     let z = currentPosition.y - this.firstTouch.y;
 
