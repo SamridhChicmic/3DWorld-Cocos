@@ -16,11 +16,16 @@ export class MovementAllDirection extends Component {
   deltatime;
   @property({ type: CCFloat })
   speed = 15;
+  ArrowUp: boolean = false;
+  ArrowDown: boolean = false;
   start() {
+    input.on(Input.EventType.KEY_DOWN, this.characterMovementKeyPress, this);
     input.on(
-      Input.EventType.KEY_PRESSING,
-      this.characterMovementKeyPress,
-
+      Input.EventType.KEY_UP,
+      () => {
+        this.ArrowDown = false;
+        this.ArrowUp = false;
+      },
       this
     );
   }
@@ -34,10 +39,12 @@ export class MovementAllDirection extends Component {
 
     switch (event.keyCode) {
       case KeyCode.ARROW_UP:
-        this.moveForWord();
+        this.ArrowUp = true;
+        this.ArrowDown = false;
         break;
       case KeyCode.ARROW_DOWN:
-        this.moveBackWord();
+        this.ArrowUp = false;
+        this.ArrowDown = true;
         break;
     }
   }
@@ -77,5 +84,11 @@ export class MovementAllDirection extends Component {
   }
   update(deltaTime: number) {
     this.deltatime = deltaTime;
+    if (this.ArrowUp == true) {
+      this.moveForWord();
+    }
+    if (this.ArrowDown == true) {
+      this.moveBackWord();
+    }
   }
 }

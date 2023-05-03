@@ -27,12 +27,13 @@ export class TopDownCameraAdjustment extends Component {
   mouseMoveTopDown(event) {
     let currentPosition = event.getLocation();
     let z = currentPosition.y - this.firstTouch.y;
-
-    this.node.eulerAngles = new Vec3(
-      this.node.eulerAngles.x + z * 0.005,
-      this.node.eulerAngles.y,
-      this.node.eulerAngles.z
-    );
+    if (this.node.eulerAngles.x < 100 && this.node.eulerAngles.x > -100) {
+      this.node.eulerAngles = new Vec3(
+        this.node.eulerAngles.x + z * 0.0005,
+        this.node.eulerAngles.y,
+        this.node.eulerAngles.z
+      );
+    }
   }
   update(deltaTime: number) {}
 }
