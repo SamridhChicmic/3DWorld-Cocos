@@ -17,8 +17,6 @@ export class MovementAllDirection extends Component {
   @property({ type: CCFloat })
   speed = 15;
   start() {
-    console.log(this.node.name);
-
     input.on(
       Input.EventType.KEY_PRESSING,
       this.characterMovementKeyPress,
@@ -45,10 +43,9 @@ export class MovementAllDirection extends Component {
   }
 
   moveForWord() {
-    console.log("CALLLED");
     let CharacterPosition = new Vec3();
     let Destination = new Vec3();
-    console.log(this.node.name);
+
     Destination.x =
       this.node.getPosition().x -
       this.node.forward.x * this.deltatime * this.speed;
