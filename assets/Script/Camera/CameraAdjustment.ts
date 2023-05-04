@@ -15,16 +15,17 @@ export class CameraAdjustment extends Component {
     );
   }
   mouseMove(event) {
-    let ratio = 0.005;
+    let ratio = 0.5;
 
     let currentPosition = event.getLocation();
     let z = (currentPosition.x - this.FirstTouch.x) * ratio;
 
     this.node.eulerAngles = new Vec3(
       this.node.eulerAngles.x,
-      this.node.eulerAngles.y + z,
+      this.node.eulerAngles.y - z,
       this.node.eulerAngles.z
     );
+    this.FirstTouch = event.getLocation();
   }
   update(deltaTime: number) {}
 }
