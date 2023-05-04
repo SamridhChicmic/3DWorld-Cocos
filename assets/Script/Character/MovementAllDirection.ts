@@ -18,6 +18,8 @@ export class MovementAllDirection extends Component {
   speed = 15;
   ArrowUp: boolean = false;
   ArrowDown: boolean = false;
+  ArrowLeft: boolean = false;
+  ArrowRight: boolean = false;
   start() {
     input.on(Input.EventType.KEY_DOWN, this.characterMovementKeyPress, this);
     input.on(
@@ -25,6 +27,8 @@ export class MovementAllDirection extends Component {
       () => {
         this.ArrowDown = false;
         this.ArrowUp = false;
+        this.ArrowLeft = false;
+        this.ArrowRight = false;
       },
       this
     );
@@ -41,30 +45,62 @@ export class MovementAllDirection extends Component {
       case KeyCode.ARROW_UP:
         this.ArrowUp = true;
         this.ArrowDown = false;
+        this.ArrowLeft = false;
+        this.ArrowRight = false;
         break;
       case KeyCode.ARROW_DOWN:
         this.ArrowUp = false;
         this.ArrowDown = true;
+        this.ArrowLeft = false;
+        this.ArrowRight = false;
         break;
-      //left right case commented
-      // case KeyCode.ARROW_LEFT:
-      //   this.moveleft();
-      //   break;
+      case KeyCode.ARROW_LEFT:
+        this.ArrowUp = false;
+        this.ArrowDown = false;
+        this.ArrowLeft = true;
+        this.ArrowRight = false;
+        break;
+      case KeyCode.ARROW_RIGHT:
+        this.ArrowUp = false;
+        this.ArrowDown = false;
+        this.ArrowLeft = false;
+        this.ArrowRight = true;
+        break;
     }
   }
-  moveleft() {
+  moveRight() {
     console.log("LEFT MOVEMENt");
     let CharacterPosition = new Vec3();
     let Destination = new Vec3();
 
-    Destination.x = this.node.getPosition().x;
+    Destination.x =
+      this.node.getPosition().x -
+      this.node.right.x * this.deltatime * this.speed;
     Destination.y = this.node.getPosition().y;
-    Destination.z = this.node.getPosition().z;
+    Destination.z =
+      this.node.getPosition().z -
+      this.node.right.z * this.deltatime * this.speed;
     Vec3.lerp(CharacterPosition, this.node.getPosition(), Destination, 0.5);
 
     this.node.setPosition(CharacterPosition);
   }
+  moveLeft() {
+    console.log("LEFT MOVEMENt");
+    let CharacterPosition = new Vec3();
+    let Destination = new Vec3();
+
+    Destination.x =
+      this.node.getPosition().x +
+      this.node.right.x * this.deltatime * this.speed;
+    Destination.y = this.node.getPosition().y;
+    Destination.z =
+      this.node.getPosition().z +
+      this.node.right.z * this.deltatime * this.speed;
+    Vec3.lerp(CharacterPosition, this.node.getPosition(), Destination, 0.5);
+    this.node.setPosition(CharacterPosition);
+  }
   moveForWord() {
+    console.log("Forword");
     let CharacterPosition = new Vec3();
     let Destination = new Vec3();
 
@@ -104,6 +140,12 @@ export class MovementAllDirection extends Component {
     }
     if (this.ArrowDown == true) {
       this.moveBackWord();
+    }
+    if (this.ArrowLeft == true) {
+      this.moveLeft();
+    }
+    if (this.ArrowRight == true) {
+      this.moveRight();
     }
   }
 }

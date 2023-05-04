@@ -24,6 +24,8 @@ export class JoyStickController extends Component {
   JoyStickBallBaseWidth: number = 0;
   TouchUp: boolean = false;
   TouchDown: boolean = false;
+  TouchLeft: boolean = false;
+  TouchRight: boolean = false;
   deltatime: number;
   start() {
     this.JoyStickBallBaseWidth =
@@ -54,14 +56,29 @@ export class JoyStickController extends Component {
       intialPos.y >= -this.JoyStickBallBaseWidth &&
       intialPos.x >= -this.JoyStickBallBaseWidth
     ) {
-      if (intialPos.y > 0) {
-        console.log("Forword");
+      // if (intialPos.x > 0) {
+      //   this.TouchUp = false;
+      //   this.TouchDown = false;
+      //   this.TouchLeft = false;
+      //   this.TouchRight = true;
+      // } else
+      if (intialPos.x < 0) {
+        this.TouchUp = false;
         this.TouchDown = false;
-        this.TouchUp = true;
+        this.TouchLeft = true;
+        this.TouchRight = false;
       } else if (intialPos.y < 0) {
         this.TouchUp = false;
         this.TouchDown = true;
+        this.TouchLeft = false;
+        this.TouchRight = false;
         console.log("backword");
+      } else if (intialPos.y > 0) {
+        console.log("Forword");
+        this.TouchDown = false;
+        this.TouchUp = true;
+        this.TouchLeft = false;
+        this.TouchRight = false;
       }
       this.JoyStickBall.setPosition(intialPos);
     }
@@ -73,6 +90,8 @@ export class JoyStickController extends Component {
   onTouchEnd() {
     this.TouchUp = false;
     this.TouchDown = false;
+    this.TouchLeft = false;
+    this.TouchRight = false;
     console.log("TouchEnd");
     this.JoyStickBall.setPosition(0, 0, 0);
   }
@@ -114,6 +133,47 @@ export class JoyStickController extends Component {
     );
     this.Character.setPosition(CharacterPositionDown);
   }
+  moveRight() {
+    console.log("LEFT MOVEMENt");
+    let CharacterPosition = new Vec3();
+    let Destination = new Vec3();
+
+    Destination.x =
+      this.Character.getPosition().x -
+      this.Character.right.x * this.deltatime * this.speed;
+    Destination.y = this.Character.getPosition().y;
+    Destination.z =
+      this.Character.getPosition().z -
+      this.Character.right.z * this.deltatime * this.speed;
+    Vec3.lerp(
+      CharacterPosition,
+      this.Character.getPosition(),
+      Destination,
+      0.5
+    );
+
+    this.Character.setPosition(CharacterPosition);
+  }
+  moveLeft() {
+    console.log("LEFT MOVEMENt");
+    let CharacterPosition = new Vec3();
+    let Destination = new Vec3();
+
+    Destination.x =
+      this.Character.getPosition().x +
+      this.Character.right.x * this.deltatime * this.speed;
+    Destination.y = this.Character.getPosition().y;
+    Destination.z =
+      this.Character.getPosition().z +
+      this.Character.right.z * this.deltatime * this.speed;
+    Vec3.lerp(
+      CharacterPosition,
+      this.Character.getPosition(),
+      Destination,
+      0.5
+    );
+    this.Character.setPosition(CharacterPosition);
+  }
   update(deltaTime: number) {
     this.deltatime = deltaTime;
     if (this.TouchUp == true) {
@@ -121,6 +181,12 @@ export class JoyStickController extends Component {
     }
     if (this.TouchDown == true) {
       this.moveBackWord();
+    }
+    if (this.TouchLeft == true) {
+      this.moveLeft();
+    }
+    if (this.TouchRight == true) {
+      this.moveRight();
     }
   }
 }
