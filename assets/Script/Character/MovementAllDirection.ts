@@ -46,9 +46,24 @@ export class MovementAllDirection extends Component {
         this.ArrowUp = false;
         this.ArrowDown = true;
         break;
+      //left right case commented
+      // case KeyCode.ARROW_LEFT:
+      //   this.moveleft();
+      //   break;
     }
   }
+  moveleft() {
+    console.log("LEFT MOVEMENt");
+    let CharacterPosition = new Vec3();
+    let Destination = new Vec3();
 
+    Destination.x = this.node.getPosition().x;
+    Destination.y = this.node.getPosition().y;
+    Destination.z = this.node.getPosition().z;
+    Vec3.lerp(CharacterPosition, this.node.getPosition(), Destination, 0.5);
+
+    this.node.setPosition(CharacterPosition);
+  }
   moveForWord() {
     let CharacterPosition = new Vec3();
     let Destination = new Vec3();
